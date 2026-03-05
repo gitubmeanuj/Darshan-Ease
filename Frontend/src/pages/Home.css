@@ -1,0 +1,203 @@
+/* GLOBAL */
+
+.home-container{
+  min-height:100vh;
+  font-family:"Poppins",sans-serif;
+
+  background:
+  radial-gradient(circle at top, rgba(255,183,77,0.25), transparent 50%),
+  linear-gradient(180deg,#fff8ef,#fffdf8);
+
+  overflow:hidden;
+}
+
+
+/* HERO SECTION */
+
+.hero-section{
+  text-align:center;
+  padding:110px 20px;
+}
+
+
+/* TITLE */
+
+.title{
+  font-size:64px;
+  font-weight:700;
+
+  background:linear-gradient(90deg,#ff6a00,#ff9800,#ffd54f);
+  -webkit-background-clip:text;
+  color:transparent;
+
+  letter-spacing:1px;
+
+  text-shadow:0 0 20px rgba(255,152,0,0.3);
+}
+
+
+/* SUBTITLE */
+
+.subtitle{
+  max-width:720px;
+  margin:28px auto;
+
+  font-size:18px;
+  line-height:1.7;
+
+  color:#6b3f00;
+}
+
+
+/* BUTTON GROUP */
+
+.button-group{
+  margin-top:40px;
+}
+
+
+/* BUTTON BASE */
+
+.btn{
+  padding:14px 36px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:600;
+
+  transition:all .3s ease;
+  margin:10px;
+  display:inline-block;
+}
+
+
+/* LOGIN BUTTON */
+
+.primary{
+  background:linear-gradient(135deg,#ff6a00,#ff9800);
+  color:white;
+
+  box-shadow:0 10px 22px rgba(255,152,0,0.35);
+}
+
+.primary:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 30px rgba(255,152,0,0.45);
+}
+
+
+/* SIGNUP BUTTON */
+
+.secondary{
+  border:2px solid #ff8f00;
+  color:#ff6f00;
+  background:white;
+}
+
+.secondary:hover{
+  background:#ff8f00;
+  color:white;
+  transform:translateY(-3px);
+}
+
+
+
+/* FEATURES SECTION */
+
+.features-section{
+  padding:90px 10%;
+  text-align:center;
+}
+
+.features-section h2{
+  font-size:38px;
+  margin-bottom:55px;
+  color:#7b2d12;
+}
+
+
+
+/* FEATURE GRID */
+
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:35px;
+}
+
+
+
+/* FEATURE CARD */
+
+.feature-card{
+
+  background:white;
+
+  padding:40px 28px;
+
+  border-radius:20px;
+
+  box-shadow:
+  0 10px 25px rgba(0,0,0,0.06);
+
+  transition:all .35s ease;
+
+  font-size:32px;
+}
+
+
+/* CARD TITLE */
+
+.feature-card h3{
+  margin-top:14px;
+  font-size:20px;
+  color:#7b2d12;
+}
+
+
+/* CARD TEXT */
+
+.feature-card p{
+  margin-top:10px;
+  font-size:14px;
+  color:#6b7280;
+  line-height:1.6;
+}
+
+
+/* CARD HOVER */
+
+.feature-card:hover{
+
+  transform:translateY(-8px) scale(1.03);
+
+  box-shadow:
+  0 20px 40px rgba(255,152,0,0.18);
+
+  background:linear-gradient(180deg,#ffffff,#fff8ef);
+}
+
+
+
+/* FLOATING DIVINE EFFECT */
+
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+  100%{transform:translateY(0)}
+}
+
+.feature-card{
+  animation:float 6s ease-in-out infinite;
+}
+
+.feature-card:nth-child(2){
+  animation-delay:1s;
+}
+
+.feature-card:nth-child(3){
+  animation-delay:2s;
+}
+
+.feature-card:nth-child(4){
+  animation-delay:3s;
+}

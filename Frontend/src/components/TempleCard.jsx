@@ -1,24 +1,38 @@
-import { Card, CardContent, Typography, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "./TempleCard.css";
 
 export default function TempleCard({ temple }) {
-  const navigate = useNavigate();
 
   return (
-    <Card sx={{ margin: 2 }}>
-      <CardContent>
-        <Typography variant="h6">{temple.name}</Typography>
-        <Typography>{temple.location}</Typography>
-        <Typography>
-          {temple.darshanStartTime} - {temple.darshanEndTime}
-        </Typography>
-        <Button
-          variant="contained"
-          onClick={() => navigate(`/temples/${temple.id}/slots`)}
-        >
-          View Slots
-        </Button>
-      </CardContent>
-    </Card>
+
+    <div className="temple-card">
+
+      <img
+        src={temple.image}
+        alt={temple.templeName}
+        className="temple-img"
+      />
+
+      <div className="temple-overlay">
+
+        <div className="temple-glass">
+
+          <h3>{temple.templeName}</h3>
+
+          <p>📍 {temple.location}</p>
+
+          <Link
+            to={`/temples/${temple.id}/slots`}
+            className="view-slots"
+          >
+            Book Darshan
+          </Link>
+
+        </div>
+
+      </div>
+
+    </div>
+
   );
 }

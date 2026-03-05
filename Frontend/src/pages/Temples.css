@@ -1,0 +1,99 @@
+.temples-page{
+
+  min-height:100vh;
+
+  background:
+  radial-gradient(circle at top, rgba(255,180,0,0.2), transparent 60%),
+  linear-gradient(180deg,#fff9f2,#fffdf8);
+
+}
+
+
+/* HERO SECTION */
+
+.temple-hero{
+
+  text-align:center;
+
+  padding:70px 20px;
+
+}
+
+.temple-hero h1{
+
+  font-size:42px;
+
+  background:linear-gradient(90deg,#ff6a00,#ff9800,#ffd54f);
+  -webkit-background-clip:text;
+  color:transparent;
+
+}
+
+.temple-hero p{
+
+  margin-top:10px;
+
+  color:#6b4b1f;
+
+}
+
+
+/* SEARCH */
+
+.temple-search{
+
+  margin-top:25px;
+
+  padding:12px 20px;
+
+  width:320px;
+
+  border-radius:25px;
+
+  border:1px solid #ffb74d;
+
+}
+
+
+/* CATEGORY */
+
+.temple-categories{
+
+  display:flex;
+
+  justify-content:center;
+
+  gap:15px;
+
+  margin:25px 0;
+
+}
+
+.temple-categories button{
+
+  padding:8px 18px;
+
+  border-radius:20px;
+
+  border:none;
+
+  background:#ffe0b2;
+
+  cursor:pointer;
+
+}
+
+
+/* GRID */
+
+.temples-grid{
+
+  display:grid;
+
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+  gap:35px;
+
+  padding:40px 8%;
+
+}

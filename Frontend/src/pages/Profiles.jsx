@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { updateUser } from "../services/userService";
+//import { updateUser } from "../services/userService";
 import toast from "react-hot-toast";
 
 export default function Profile() {

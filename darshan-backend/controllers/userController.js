@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 // Get All Users
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await User.find().select("-password").populate("managedTempleId", "templeName");
 
     res.json({
       success: true,
@@ -31,7 +31,7 @@ exports.getUsersByRole = async (req, res) => {
       });
     }
 
-    const users = await User.find({ role }).select("-password");
+    const users = await User.find({ role }).select("-password").populate("managedTempleId", "templeName");
 
     res.json({
       success: true,
@@ -49,13 +49,25 @@ exports.getUsersByRole = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, phone, role } = req.body;
+    const { name, email, phone, role, managedTempleId } = req.body;
+
+    // Only include fields that were actually sent in the request
+    const updateData = {};
+    if (name !== undefined) updateData.name = name;
+    if (email !== undefined) updateData.email = email;
+    if (phone !== undefined) updateData.phone = phone;
+    if (role !== undefined) updateData.role = role;
+    if (managedTempleId !== undefined) {
+      updateData.managedTempleId = managedTempleId || null;
+    }
+
+    console.log("[updateUser] id:", id, "updateData:", JSON.stringify(updateData));
 
     const user = await User.findByIdAndUpdate(
       id,
-      { name, email, phone, role },
+      { $set: updateData },
       { new: true }
-    ).select("-password");
+    ).select("-password").populate("managedTempleId", "templeName");
 
     if (!user) {
       return res.status(404).json({
@@ -64,18 +76,59 @@ exports.updateUser = async (req, res) => {
       });
     }
 
+    console.log("[updateUser] updated user managedTempleId:", user.managedTempleId);
+
     res.json({
       success: true,
       message: "User updated successfully",
       data: user
     });
   } catch (error) {
+    console.error("[updateUser] error:", error.message);
     res.status(500).json({
       success: false,
       message: error.message
     });
   }
 };
+
+// Assign Temple to Organizer (Admin only)
+exports.assignTemple = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { managedTempleId } = req.body;
+
+    console.log("[assignTemple] organizerId:", id, "managedTempleId:", managedTempleId);
+
+    const user = await User.findByIdAndUpdate(
+      id,
+      { $set: { managedTempleId: managedTempleId || null } },
+      { new: true }
+    ).select("-password").populate("managedTempleId", "templeName");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Organizer not found"
+      });
+    }
+
+    console.log("[assignTemple] success — managedTempleId:", user.managedTempleId);
+
+    res.json({
+      success: true,
+      message: managedTempleId ? "Temple assigned successfully" : "Temple unassigned",
+      data: user
+    });
+  } catch (error) {
+    console.error("[assignTemple] error:", error.message);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
 
 // Delete User
 exports.deleteUser = async (req, res) => {
@@ -136,6 +189,32 @@ exports.createUser = async (req, res) => {
         phone: user.phone,
         role: user.role
       }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// Get Single User by ID (Admin)
+exports.getUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.json({
+      success: true,
+      data: user
     });
   } catch (error) {
     res.status(500).json({

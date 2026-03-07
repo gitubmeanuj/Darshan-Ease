@@ -5,7 +5,7 @@ import { getAllUsers, createUser, deleteUser } from "../../services/userService"
 import { getAllEvents, createEvent, deleteEvent } from "../../services/eventService";
 import { getAllMaintenance, createMaintenance, deleteMaintenance } from "../../services/maintenanceService";
 import { createTemple, deleteTemple, createSlot, deleteSlot } from "../../services/adminServices";
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, CircularProgress, Tab, Tabs } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, CircularProgress, Tab, Tabs, MenuItem } from "@mui/material";
 import toast from "react-hot-toast";
 
 const styles = `
@@ -467,9 +467,9 @@ export default function AdminTemples() {
           <TextField label="Name" fullWidth margin="normal" value={formData.templeName || ""} onChange={(e) => setFormData({ ...formData, templeName: e.target.value })} />
           <TextField label="Location" fullWidth margin="normal" value={formData.location || ""} onChange={(e) => setFormData({ ...formData, location: e.target.value })} />
           <TextField label="Description" fullWidth margin="normal" multiline rows={3} value={formData.description || ""} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
-          <TextField select label="Image" fullWidth margin="normal" value={formData.image || ""} onChange={(e) => setFormData({ ...formData, image: e.target.value })} SelectProps={{ native: true }}>
-            <option value="">Select Image</option>
-            {availableImages.map((img) => <option key={img.path} value={img.path}>{img.name}</option>)}
+          <TextField select label="Image" fullWidth margin="normal" value={formData.image || ""} onChange={(e) => setFormData({ ...formData, image: e.target.value })}>
+            <MenuItem value="">Select Image</MenuItem>
+            {availableImages.map((img) => <MenuItem key={img.path} value={img.path}>{img.name}</MenuItem>)}
           </TextField>
         </DialogContent>
         <DialogActions>

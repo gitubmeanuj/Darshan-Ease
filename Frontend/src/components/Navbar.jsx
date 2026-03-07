@@ -33,7 +33,9 @@ export default function Navbar() {
         {user && isAdmin && (
           <>
             <Link to="/bookings" style={{ fontSize: "12px" }}>📊 All Bookings</Link>
-            <Link to="/admin/temples" style={{ color: "#ff9800" }}>⚙️ Admin Panel</Link>
+            <Link to="/admin/temples" style={{ color: "#ff9800" }}>⚙️ Temples</Link>
+            <Link to="/admin/users" style={{ color: "#ff9800" }}>👥 Users</Link>
+            <Link to="/admin/organizers" style={{ color: "#ff9800" }}>🏢 Organizers</Link>
             <Link to="/profile">👤 Admin Profile</Link>
           </>
         )}

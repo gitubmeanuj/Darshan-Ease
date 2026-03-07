@@ -15,6 +15,8 @@ import Slots from "./pages/Slots";
 import Bookings from "./pages/Bookings";
 import Profiles from "./pages/Profiles";
 import AdminTemples from "./pages/admin/AdminTemples";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminOrganizers from "./pages/admin/AdminOrganizers";
 import OrganizerDashboard from "./pages/OrganizerDashboard";
 
 import "./App.css";
@@ -54,6 +56,8 @@ function App() {
             }
           >
             <Route path="/admin/temples" element={<AdminTemples />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/organizers" element={<AdminOrganizers />} />
           </Route>
 
           {/* Organizer Routes */}

@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["USER", "ADMIN", "ORGANIZER"],
     default: "USER"
+  },
+  managedTempleId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Temple",
+    default: null
   }
 }, { timestamps: true });
 

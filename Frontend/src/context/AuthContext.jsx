@@ -26,8 +26,15 @@ export default function AuthProvider({ children }) {
     try {
       const res = await loginUser(credentials);
 
-      const userData = res.data.user;
-      const userToken = res.data.token;
+      // Backend returns data in res.data.data structure
+      const userData = {
+        id: res.data.data.id,
+        name: res.data.data.name,
+        email: res.data.data.email,
+        phone: res.data.data.phone,
+        role: res.data.data.role
+      };
+      const userToken = res.data.data.token;
 
       localStorage.setItem("token", userToken);
       localStorage.setItem("user", JSON.stringify(userData));
@@ -54,7 +61,7 @@ export default function AuthProvider({ children }) {
     setToken(null);
   };
 
-  return (
+    return (
     <AuthContext.Provider
       value={{
         user,
@@ -62,6 +69,9 @@ export default function AuthProvider({ children }) {
         loading,
         isAuthenticated: !!user,
         isAdmin: user?.role === "ADMIN",
+        isOrganizer: user?.role === "ORGANIZER",
+        isUser: user?.role === "USER",
+        hasAdminAccess: ["ADMIN", "ORGANIZER"].includes(user?.role),
         login,
         logout
       }}

@@ -25,11 +25,16 @@ export default function SignUp() {
     e.preventDefault();
 
     try {
-      await signupUser(form);
-      toast.success("Signup successful");
-      navigate("/login");
-    } catch {
-      toast.error("Signup failed");
+      const res = await signupUser(form);
+      if (res.data.success) {
+        toast.success("Account created! Please log in.");
+        navigate("/login");
+      } else {
+        toast.error(res.data.message || "Signup failed");
+      }
+    } catch (error) {
+      const msg = error.response?.data?.message || "Signup failed";
+      toast.error(msg);
     }
   };
 

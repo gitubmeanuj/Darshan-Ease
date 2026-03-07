@@ -24,11 +24,16 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      await login(form);
-      toast.success("Login successful");
-      navigate("/temples");
-    } catch {
-      toast.error("Invalid email or password");
+      const result = await login(form);
+      if (result.success) {
+        toast.success("Login successful! 🙏");
+        navigate("/temples");
+      } else {
+        toast.error(result.message || "Login failed");
+      }
+    } catch (error) {
+      toast.error("An error occurred during login");
+      console.error(error);
     }
   };
 

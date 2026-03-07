@@ -52,7 +52,10 @@ exports.getMyBookings = async (req, res) => {
   try {
 
     const bookings = await Booking.find({ userId: req.user.id })
-      .populate("slotId");
+      .populate({
+        path: "slotId",
+        populate: { path: "templeId" }
+      });
 
     res.json({
       success: true,
@@ -82,6 +85,51 @@ exports.getAllBookings = async (req, res) => {
     res.json({
       success: true,
       data: bookings
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// Cancel Booking (refund seats)
+exports.cancelBooking = async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+
+    const booking = await Booking.findById(bookingId);
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found"
+      });
+    }
+
+    // Verify user owns this booking
+    if (booking.userId.toString() !== req.user.id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to cancel this booking"
+      });
+    }
+
+    // Refund seats back to slot
+    const slot = await DarshanSlot.findById(booking.slotId);
+    if (slot) {
+      slot.availableSeats += booking.numberOfPeople;
+      await slot.save();
+    }
+
+    // Delete booking
+    await Booking.findByIdAndDelete(bookingId);
+
+    res.json({
+      success: true,
+      message: "Booking cancelled successfully"
     });
 
   } catch (error) {

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { getTemples } from "../services/templeService";
+import { getTempleImageUrl } from "../utils/templeImageMap";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;600&display=swap');
@@ -22,6 +24,9 @@ const styles = `
   .temple-card { position: relative; border-radius: 20px; overflow: hidden; cursor: pointer; transition: transform .4s, box-shadow .4s; box-shadow: 0 6px 24px rgba(160,80,0,0.12); }
   .temple-card:hover { transform: translateY(-8px); box-shadow: 0 20px 48px rgba(160,80,0,0.22); }
   .temple-img-placeholder { width: 100%; height: 260px; display: flex; align-items: center; justify-content: center; font-size: 72px; background: linear-gradient(135deg,#f5d080,#f0a040); }
+  .image-placeholder { width: 100%; height: 260px; display: flex; align-items: center; justify-content: center; font-size: 72px; background: linear-gradient(135deg,#f5d080,#f0a040); }
+  .temple-img { width: 100%; height: 260px; object-fit: cover; transition: transform 0.6s ease; }
+  .temple-card:hover .temple-img { transform: scale(1.08); }
   .temple-overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.3) 50%, transparent 100%); }
   .temple-glass { width: 100%; backdrop-filter: blur(10px); background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.28); border-radius: 14px; padding: 16px 18px; color: white; text-align: center; }
   .temple-glass h3 { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 600; margin-bottom: 4px; }
@@ -54,14 +59,25 @@ const DEMO_TEMPLES = [
 const CATEGORIES = ["All", "Jyotirlinga", "Shakti Peeth", "Famous Temples"];
 
 function TempleCard({ temple }) {
+  const imageUrl = getTempleImageUrl(temple);
+
   return (
     <div className="temple-card">
-      <div className="temple-img-placeholder">{temple.emoji || "🛕"}</div>
+      <img 
+        src={imageUrl}
+        alt={temple.templeName}
+        className="temple-img"
+        onError={(e) => {
+          e.target.style.display = "none";
+          e.currentTarget.nextElementSibling.style.display = "flex";
+        }}
+      />
+      <div className="image-placeholder" style={{ display: "none" }}>🛕</div>
       <div className="temple-overlay">
         <div className="temple-glass">
           <h3>{temple.templeName}</h3>
           <p>📍 {temple.location}</p>
-          <a href={`/temples/${temple.id}/slots`} className="view-slots">
+          <a href={`/temples/${temple._id}/slots`} className="view-slots">
             Book Darshan
           </a>
         </div>
@@ -77,10 +93,19 @@ export default function Temples() {
   const [loading, setLoading]         = useState(true);
 
   useEffect(() => {
-    // Replace with your real API call:
-    // getTemples().then(res => setTemples(res.data)).catch(() => setTemples(DEMO_TEMPLES)).finally(() => setLoading(false));
-    const t = setTimeout(() => { setTemples(DEMO_TEMPLES); setLoading(false); }, 800);
-    return () => clearTimeout(t);
+    setLoading(true);
+    getTemples()
+      .then(res => {
+        const templesToDisplay = res.data.data && Array.isArray(res.data.data)
+          ? res.data.data
+          : [];
+        setTemples(templesToDisplay);
+      })
+      .catch(() => {
+        console.error("Failed to fetch temples");
+        setTemples([]);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const filtered = temples.filter(t =>
@@ -148,7 +173,7 @@ export default function Temples() {
           </div>
         ) : (
           <div className="temples-grid">
-            {filtered.map(t => <TempleCard key={t.id} temple={t} />)}
+            {filtered.map(t => <TempleCard key={t._id || t.id} temple={t} />)}
           </div>
         )}
 

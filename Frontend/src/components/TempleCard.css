@@ -32,6 +32,19 @@
 
 }
 
+/* IMAGE FALLBACK PLACEHOLDER */
+
+.image-placeholder {
+  position: absolute;
+  width: 100%;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  background: linear-gradient(135deg,#f5d080,#f0a040);
+}
+
 
 /* DARK OVERLAY */
 
